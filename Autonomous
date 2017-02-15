@@ -1,0 +1,26 @@
+import wpilib
+
+class Autonomous(wpilib.IterativeRobot):
+
+    def robotInit(self):
+        self.turncounter = 0
+        self.auto_loop_counter = 0
+        frontLeft = wpilib.Talon(0)
+        frontRight = wpilib.Talon(1)
+        self.robot_drive = wpilib.RobotDrive(frontLeft, frontRight)
+
+    def general(self):
+        if self.auto_loop_counter < 100:
+            wpilib.RobotDrive(1, 1)
+            self.auto_loop_counter += 1
+        if self.auto_loop_counter > 100:
+            wpilib.RobotDrive(0, 0)
+
+    def turnleft(self):
+        wpilib.RobotDrive(1, 0)
+
+    def turnright(self):
+        wpilib.RobotDrive(0, 1)
+        self.turncounter += 1
+        if self.turncounter > 10:
+
