@@ -1,0 +1,38 @@
+import wpilib
+
+
+class MyRobot(wpilib.IterativeRobot):
+
+    def robotInit(self):
+
+        front_left = wpilib.Talon(0)
+        front_right = wpilib.Talon(1)
+        launcher = wpilib.Victor(4)
+        climber = wpilib.Victor(3)
+        self.robot_drive = wpilib.RobotDrive(front_left, front_right)
+        self.launch = wpilib.RobotDrive(launcher)
+        self.climb = wpilib.RobotDrive(climber)
+        self.stick = wpilib.XboxController(1)
+        self.trigger = wpilib.XboxController(7)
+        self.trigger2 = wpilib.XboxController(8)
+
+    def teleopInit(self):
+        self.robot_drive.arcadeDrive(self.stick)
+        self.launch.arcadeDrive(self.trigger)
+        self.climb.arcadeDrive(self.trigger2)
+
+    def autonomousInit(self):
+        self.auto_loop_counter = 0
+
+    def autonomousPeriodic(self):
+        if self.auto_loop_counter < 100:
+            self.robot_drive.drive(-0.5, 0)
+            self.auto_loop_counter += 1
+        else:
+            self.robot_drive.drive(0, 0)
+
+    def testPeriodic(self):
+        wpilib.LiveWindow.run()
+
+if __name__ == "__main__":
+    wpilib.run(MyRobot)
